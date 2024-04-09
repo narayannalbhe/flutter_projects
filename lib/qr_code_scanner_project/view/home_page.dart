@@ -16,32 +16,36 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('QR code Scanner and Generator'),
       ),
-      body: Column(
-        children: [
-          ElevatedButton(
-              onPressed: (){
-                setState(() {
-                  Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return GenerateQrCode();
-                  })) ;
-                });
-              },
-              child: Text(
-            'Scan QR Code '
-          )),
-          SizedBox(height: 10),
-          ElevatedButton(
-              onPressed: (){
-                setState(() {
-                  Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return ScanQrCode();
-                  })) ;
-                });
-              },
-              child: Text(
-                  'Generate QR Code '
-              )),
-        ],
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ElevatedButton(
+                onPressed: (){
+                  setState(() {
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return GenerateQrCode();
+                    })) ;
+                  });
+                },
+                child: Text(
+              'Scan QR Code '
+            )),
+            SizedBox(height: 10),
+            ElevatedButton(
+                onPressed: (){
+                  setState(() {
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return ScanQrCode();
+                    })) ;
+                  });
+                },
+                child: Text(
+                    'Generate QR Code '
+                )),
+          ],
+        ),
       ),
     );
   }

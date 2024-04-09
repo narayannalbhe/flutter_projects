@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ScanQrCode extends StatefulWidget {
   const ScanQrCode({super.key});
@@ -10,19 +11,30 @@ class ScanQrCode extends StatefulWidget {
 }
 
 class _ScanQrCodeState extends State<ScanQrCode> {
-  String qrResult = 'scanned Data will Appear here';
+  String qrResult = 'Scanned data will appear here';
+  String qrData = '';
 
-  Future<void> scanQR() async{
-    try{
+  Future<void> scanQR() async {
+    try {
       final qrCode = await FlutterBarcodeScanner.scanBarcode(
-           '#ff6666','cancel',true, ScanMode.QR);
-      if(!mounted)return;
+        '#ff6666',
+        'Cancel',
+        true,
+        ScanMode.QR,
+      );
+      if (!mounted) return;
       setState(() {
-        this.qrResult = qrCode.toString();
+        qrResult = qrCode.toString();
       });
-    }on PlatformException{
-      qrResult = 'Fail to read Qr code';
+    } on PlatformException {
+      qrResult = 'Failed to read QR code';
     }
+  }
+
+  void generateQRCode(String data) {
+    setState(() {
+      qrData = data;
+    });
   }
 
   @override
@@ -31,20 +43,31 @@ class _ScanQrCodeState extends State<ScanQrCode> {
       appBar: AppBar(
         title: Text('QR Code Scanner'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 30,),
-          Text(qrResult,style: TextStyle(
-
-          ),),
-          SizedBox(height: 10,),
-          ElevatedButton(
-              onPressed: (){
-
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 30),
+            qrData.isNotEmpty
+                ? QrImage(
+              data: qrData,
+              version: QrVersions.auto,
+              size: 200.0,
+            )
+                : Text(qrResult),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: scanQR,
+              child: Text('Scan Code'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                generateQRCode('Your QR code data here');
               },
-              child: Text('Scan Code'))
-        ],
+              child: Text('Scan QR Code'),
+            ),
+          ],
+        ),
       ),
     );
   }

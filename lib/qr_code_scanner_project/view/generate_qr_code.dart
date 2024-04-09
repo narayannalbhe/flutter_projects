@@ -10,6 +10,7 @@ class GenerateQrCode extends StatefulWidget {
 
 class _GenerateQrCodeState extends State<GenerateQrCode> {
   TextEditingController urlController = TextEditingController();
+  bool showQrCode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class _GenerateQrCodeState extends State<GenerateQrCode> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (urlController.text.isNotEmpty)
+              if (showQrCode && urlController.text.isNotEmpty)
                 Container(
                   height: 200,
                   child: QrImage(
@@ -37,14 +38,18 @@ class _GenerateQrCodeState extends State<GenerateQrCode> {
                 child: TextField(
                   controller: urlController,
                   decoration: InputDecoration(
-                      hintText: 'Enter your Data',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                      labelText: 'Enter your data'),
+                    hintText: 'Enter your Data',
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                    labelText: 'Enter your data',
+                  ),
                 ),
               ),
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
+                  setState(() {
+                    showQrCode = urlController.text.isNotEmpty;
+                  });
                 },
                 child: Text('Generate Qr Code'),
               ),
