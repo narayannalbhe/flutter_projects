@@ -13,6 +13,7 @@ class _LanguageTranslatorState extends State<LanguageTranslator> {
   var originLanguage = 'From';
   var destinationLanguage = 'To';
   var output = '';
+
   TextEditingController languageController = TextEditingController();
 
   void translate(String src, String dest, String input) async {
