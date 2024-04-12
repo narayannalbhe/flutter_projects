@@ -6,6 +6,8 @@ import 'package:flutter_projects/pagination/pagination_screen.dart';
 import 'package:flutter_projects/pic_in_picture/pic_in_picture.dart';
 import 'package:flutter_projects/qr_code_scanner_project/view/generate_qr_code.dart';
 import 'package:flutter_projects/qr_code_scanner_project/view/scan_qr_code.dart';
+import 'package:flutter_projects/weather_project/view/WeatherHomePage.dart';
+import 'package:flutter_projects/weather_project/view/home/home.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -140,6 +142,19 @@ class _HomePageState extends State<HomePage> {
               },
               icon: Icon(Icons.payment),
               label: Text('Pagination Screen'),
+            ),
+
+
+            SizedBox(height: 10),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WeatherHomePage()),
+                );
+              },
+              icon: Icon(Icons.payment),
+              label: Text('Weather Screen'),
             ),
           ],
         ),
