@@ -16,7 +16,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
 
   TextEditingController cityController = TextEditingController();
-
+  bool isLocationAllowed = false,
+      isLocationPermissionChecked = false;
+  String latitudel1 = '',
+      longitudel2 = '';
 
   List hourlyWeatherForecast = [];
   List dailyWeatherForecast = [];
@@ -25,8 +28,12 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   String currentWeatherStatus = '';
 
   String weatherIcon = "";
+
   void initState() {
     super.initState();
+    if (isLocationAllowed == false && isLocationPermissionChecked == false) {
+      // _getCurrentLocation();
+    }
     fetchWeatherData('Pune');
     fetchForecastData('Pune');
   }
@@ -74,6 +81,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.deepPurple.shade50,
       appBar: AppBar(
         title: Text('Weather App'),
       ),
@@ -116,7 +124,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                         builder: (BuildContext context) {
                           return SingleChildScrollView(
                             padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom,
+                              bottom: MediaQuery
+                                  .of(context)
+                                  .viewInsets
+                                  .bottom,
                             ),
                             scrollDirection: Axis.vertical,
                             child: Container(
@@ -124,6 +135,11 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
+                                  TextButton(
+                                      onPressed: () {
+                                        // _getCurrentLocation();
+                                      },
+                                      child: Text('Current Location')),
                                   TextField(
                                     controller: cityController,
                                     decoration: InputDecoration(
@@ -165,14 +181,14 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             ],
           ),
           weatherData != null &&
-                  weatherData!['current'] != null &&
-                  weatherData!['current']['condition'] != null
+              weatherData!['current'] != null &&
+              weatherData!['current']['condition'] != null
               ? Image.network(
-                  "https:${weatherData!['current']['condition']['icon']}",
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                )
+            "https:${weatherData!['current']['condition']['icon']}",
+            width: 100,
+            height: 100,
+            fit: BoxFit.cover,
+          )
               : SizedBox(),
 
           Center(
@@ -183,14 +199,20 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
           Container(
             padding: EdgeInsets.only(top: 5),
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * 0.3,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   padding: EdgeInsets.only(top: 5),
-                  height: MediaQuery.of(context).size.height * 0.2,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -202,7 +224,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                           children: [
                             Text(
                               'Today',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             GestureDetector(
                               onTap: () {},
@@ -218,23 +241,25 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                         ),
                       ),
                       SizedBox(
-                        height: 100,
-                        child: ListView.builder(
-                          itemCount: weatherForecastData != null
-                              ? weatherForecastData!['forecast']['forecastday'].length
-                              : 0,
-                          itemBuilder: (BuildContext context, int index) {
-                            var forecast = weatherForecastData!['forecast']['forecastday'][index];
-                            var date = forecast['date'];
-                            var maxTempC = forecast['day']['maxtemp_c'];
-                            var minTempC = forecast['day']['mintemp_c'];
+                          height: 100,
+                          child: ListView.builder(
+                            itemCount: weatherForecastData != null
+                                ? weatherForecastData!['forecast']['forecastday']
+                                .length
+                                : 0,
+                            itemBuilder: (BuildContext context, int index) {
+                              var forecast = weatherForecastData!['forecast']['forecastday'][index];
+                              var date = forecast['date'];
+                              var maxTempC = forecast['day']['maxtemp_c'];
+                              var minTempC = forecast['day']['mintemp_c'];
 
-                            return ListTile(
-                              title: Text('Date: $date'),
-                              subtitle: Text('Max Temp: $maxTempC°C, Min Temp: $minTempC°C'),
-                            );
-                          },
-                        )
+                              return ListTile(
+                                title: Text('Date: $date'),
+                                subtitle: Text(
+                                    'Max Temp: $maxTempC°C, Min Temp: $minTempC°C'),
+                              );
+                            },
+                          )
 
                       ),
                     ],
@@ -264,11 +289,17 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     double cloud = current['cloud'].toDouble();
 
     return Container(
-      height: MediaQuery.of(context).size.height * 0.38,
-      width: MediaQuery.of(context).size.width,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height * 0.38,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.2),
+        color: Colors.deepPurple.withOpacity(0.2),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -292,7 +323,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -338,16 +369,20 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                   Text(
                     current['condition']['text'],
                     style: TextStyle(
-                      color: Colors.deepPurple,
+                      color: Colors.deepPurple,fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
+                  Text(',', style: TextStyle(
+                    color: Colors.deepPurple,fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),),
                   SizedBox(width: 5),
                   Text(
                     DateFormat('MMMM EEE d')
                         .format(DateTime.parse(location['localtime'])),
                     style: TextStyle(
-                      color: Colors.deepPurple,
+                      color: Colors.deepPurple,fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
@@ -381,4 +416,120 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
       ],
     );
   }
+
 }
+  /// Get Current Location API
+  // _getCurrentLocation() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
+  //
+  //   // Test if location services are enabled.
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     if (this.mounted) {
+  //       setState(() {
+  //       });
+  //     }
+  //     return Future.error('Location services are disabled.');
+  //   }
+  //
+  //   permission = await Geolocator.checkPermission();
+  //
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       if (this.mounted) {
+  //         // _showCity=true;
+  //         //_showCountry=true;
+  //         isLocationAllowed = false;
+  //         isLocationPermissionChecked = true;
+  //         setState(() {});
+  //       }
+  //       return Future.error('Location permissions are denied');
+  //     }
+  //
+  //     else if (permission == LocationPermission.deniedForever) {
+  //       // Permissions are denied forever, handle appropriately.
+  //       if (this.mounted) {
+  //         //  _showCity=true;
+  //         // _showCountry=true;
+  //         isLocationAllowed = false;
+  //         isLocationPermissionChecked = true;
+  //         setState(() {});
+  //       }
+  //       return Future.error(
+  //           'Location permissions are permanently denied, we cannot request permissions.');
+  //     }
+  //
+  //     else {
+  //       isLocationAllowed = true;
+  //       isLocationPermissionChecked = true;
+  //
+  //       Position position = await Geolocator.getCurrentPosition(
+  //           desiredAccuracy: LocationAccuracy.high);
+  //
+  //       if (position != null) {
+  //         double latitude = position.latitude;
+  //         double longitude = position.longitude;
+  //
+  //         List<Placemark> placemarks = await placemarkFromCoordinates(
+  //           latitude, longitude, localeIdentifier: 'en_US',);
+  //         if (placemarks != null) {
+  //           String countrycode = placemarks[0].isoCountryCode.toString();
+  //
+  //           latitudel1 = latitude.toString();
+  //           longitudel2 = longitude.toString();
+  //
+  //
+  //           if (this.mounted) {
+  //             setState(() {
+  //               //  _showCountry=true;
+  //               // _showCity=true;
+  //             });
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //
+  //   else if (permission == LocationPermission.deniedForever) {
+  //     // Permissions are denied forever, handle appropriately.
+  //     if (this.mounted) {
+  //       // _showCity=true;
+  //       //_showCountry=true;
+  //       setState(() {});
+  //     }
+  //     return Future.error(
+  //         'Location permissions are permanently denied, we cannot request permissions.');
+  //   }
+  //
+  //   else {
+  //     Position position = await Geolocator.getCurrentPosition(
+  //         desiredAccuracy: LocationAccuracy.high);
+  //
+  //     if (position != null) {
+  //       double latitude = position.latitude;
+  //       double longitude = position.longitude;
+  //
+  //       List<Placemark> placemarks = await placemarkFromCoordinates(
+  //           latitude, longitude);
+  //       if (placemarks != null) {
+  //         String countrycode = placemarks[0].isoCountryCode.toString();
+  //
+  //
+  //         latitudel1 = latitude.toString();
+  //         longitudel2 = longitude.toString();
+  //         print(latitudel1);
+  //         print(longitudel2);
+  //
+  //         if (this.mounted) {
+  //           setState(() {
+  //
+  //           });
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+
+
