@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_projects/SignInPage.dart';
 import 'package:flutter_projects/qr_code_scanner_project/view/home_page.dart';
 import 'package:flutter_projects/task_management/view/TaskHomePage.dart';
 
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+       home: const HomePage(),
+//      home: const SignInPage(),
       // home: const TaskHomePage(),
     );
   }
